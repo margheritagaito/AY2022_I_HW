@@ -11,12 +11,16 @@
 */
 #include "project.h"
 
+#define BOTH_ON 0b00000011
 
 //create uffer for I2C slave
 uint8 buffer_I2C[7];
 
 int main(void)
 {
+    
+    uint8 device_status;
+    
     CyGlobalIntEnable; /* Enable global interrupts. */
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
@@ -26,10 +30,21 @@ int main(void)
     //set up buffer     
     EZI2C_SetBuffer1(7 , 2 , (void*) buffer_I2C);
     
+    //start with LED OFF
+    Pin_LED_Write(0);
+    
 
     for(;;)
     {
         /* Place your application code here. */
+        
+        
+        //check both devices ON -> from status pins in CTRL REG 0
+        device_status = buffer_I2C[0] | (0x00111100);
+        if (device_status == BOTH_ON)
+        {
+            Pin_LED_Write(1);
+        }
     }
 }
 
