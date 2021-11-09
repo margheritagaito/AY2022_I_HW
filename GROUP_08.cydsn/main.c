@@ -10,10 +10,14 @@
  * ========================================
 */
 #include "project.h"
+#include "I2C_Slave_Buffer.h"
 
-#define BOTH_ON 0b00000011
+#define BOTH_ON 0b00000011 //to check both devices connected and visualize that with LED
 
-//create uffer for I2C slave
+
+
+
+//create buffer for I2C slave
 uint8 buffer_I2C[7];
 
 int main(void)
