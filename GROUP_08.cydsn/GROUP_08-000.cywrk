@@ -9,6 +9,7 @@
 <projects>
 <v>.\GROUP_08.cyprj</v>
 </projects>
+<<<<<<< HEAD
 <workspace_id v="61c9f320-d581-4ed7-979a-0d3ce5956f4b" />
 <WriteAppVersionLastSavedWith v="4.4.0.80" />
 <WriteAppMarketingVersionLastSavedWith v="4.4" />
@@ -16,6 +17,13 @@
 <wrkspc_dependencies>
 <wrkspc_dependency project="GROUP_08.cyprj" dependency="${CyRoot}\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj" />
 </wrkspc_dependencies>
+=======
+<workspace_id v="bea27cd1-0081-4c27-bc96-ed1ffd8e63ee" />
+<WriteAppVersionLastSavedWith v="4.4.0.80" />
+<WriteAppMarketingVersionLastSavedWith v="4.4" />
+<CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWorkspaceSerialize+CyPrjDependencyList" version="4">
+<wrkspc_dependencies />
+>>>>>>> I2C
 </CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316>
 <CyGuid_63b68103-67f5-4406-8da6-5c8625765b82 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWorkspaceSerialize+CyIgnoredSystemDepsList" version="1">
 <wrkspc_dependencies />
