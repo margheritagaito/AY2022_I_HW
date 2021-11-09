@@ -16,6 +16,7 @@
     
     #include "cytypes.h"
     #include "stdio.h"
+    #include "I2C_Slave_Buffer.h"
     
     /* **** DEFINE **** */
     
@@ -29,8 +30,10 @@
     
     CY_ISR_PROTO (Custom_ISR_ADC);
     
-    char DataBuffer[TRANSMIT_BUFFER_SIZE];
-    volatile uint8 PacketReadyFlag;
+    char DataBuffer[TRANSMIT_BUFFER_SIZE];//SECONDO ME NON SERVE(marg)
+    volatile uint8 PacketReadyFlag;//SECONDO ME NON SERVE(marg)
+    
+    int sampling_size;
     
 #endif
 

@@ -37,13 +37,7 @@ CY_ISR (Custom_ISR_ADC){
     
     Timer_ReadStatusRegister();
     
-    // Set the size equal to the one imposted via I2C
-    
-    int sampling_size = 5; //provvisorio
-    /*  int sampling_size = i2cBuffer[];
-        Devo fare lo shift and per capire il numero corretto
-        deve essere GLOBALE
-    */
+   
     // Sampling LDR
     
     AMux_Select(LDR_CHANNEL);
