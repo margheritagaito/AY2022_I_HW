@@ -23,7 +23,7 @@
     #define TRANSMIT_BUFFER_SIZE 16 // Credo vada modificata per l'I2C
     #define MIN_VALUE 0
     #define MAX_VALUE 65535
-    #define SIZE 5
+    #define MAX_SIZE 100 // Sample fatto al massimo su 100 valori
     #define LDR_CHANNEL 0
     #define TS_CHANNEL 1
     
