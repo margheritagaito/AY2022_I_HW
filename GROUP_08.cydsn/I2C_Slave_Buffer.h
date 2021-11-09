@@ -15,6 +15,8 @@
     
     #define __I2C_Slave_Buffer_H
     
+    
+    
     //slave buffer address: 0x08
     #define SLAVE_BUFF_ADDR 0x08 //NON SO SE SERVE VERAMENTE
     
