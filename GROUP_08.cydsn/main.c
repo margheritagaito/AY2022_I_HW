@@ -33,6 +33,8 @@ int main(void)
     EZI2C_Start();
     //set up buffer     
     EZI2C_SetBuffer1(7 , 2 , (void*) buffer_I2C);
+    //write on buffer the WAI register with the return value
+    buffer_I2C[WHOAMI_ADDR] = WHOAMI_RETVAL;
     
     //start with LED OFF
     Pin_LED_Write(0);

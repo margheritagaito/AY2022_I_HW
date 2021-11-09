@@ -27,6 +27,10 @@
      //WhoAmI register address: 0x02
     #define WHOAMI_ADDR 0x02
     
+    //WhoAmI register return value (read only)
+    #define WHOAMI_RETVAL 0xBC
+    
+    
     //CH0 bit 15-08 register address: 0x03
     #define CH_0_MSB_ADDR 0x03
     
