@@ -32,7 +32,6 @@
     //WhoAmI register return value (read only)
     #define WHOAMI_RETVAL 0xBC
     
-    
     //CH0 bit 15-08 register address: 0x03
     #define CH_0_MSB_ADDR 0x03
     
@@ -52,6 +51,9 @@
     #define BOTH_OFF 0b00000000 //both channels off 
     #define AVG_SAMPLES_MASK 0b00111100 /*mask, used to access the 4 bits (in control register 0)
                                         that determine the number of samples to be averaged */ 
+    
+    #define HIGH 1
+    #define LOW 0
     
 #endif
 
