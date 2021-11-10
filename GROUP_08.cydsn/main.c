@@ -9,20 +9,10 @@
  *
  * ========================================
 */
+
 #include "project.h"
 #include "I2C_Slave_Buffer.h"
 #include "../InterruptRoutine/InterruptRoutine.h"
-
-#define BOTH_ON_MASK 0b00000011 //mask, used to select the two status pins in control register 0
-#define BOTH_ON 0b00000011 //value used to check both devices connected and visualize that with LED
-#define CH0_ON 0b00000001 //only channel 0 on
-#define CH1_ON 0b00000010 //only channel 1 on
-#define BOTH_OFF 0b00000000 //both channels off 
-/*questa cosa può essere fatta un maniera più intelligente probabilmente-> solo con ch0 e ch1 senza both...!!!!!!!!!!*/
-
-#define AVG_SAMPLES_MASK 0b00111100 /*mask, used to access the 4 bits (in control register 0)
-that determine the number of samples to be averaged */ 
-
 
 int main(void)
 { 
@@ -43,7 +33,6 @@ int main(void)
     //start with LED OFF
     Pin_LED_Write(0);
     
-
     for(;;)
     {
         //define the number of smaples to be used to compute the average
@@ -52,10 +41,15 @@ int main(void)
         
         //check both devices ON -> from status pins in CTRL REG 0
         device_status = buffer_I2C[0] | (BOTH_ON_MASK);
+        
+        // Set timer period at the one selected 
+        
+        Timer_WritePeriod(buffer_I2C[CTRL_REG_1_ADDR]); 
+        
+        // Turn on the LED if both channels are being sampled
+        
         if (device_status == BOTH_ON)
-        {
             Pin_LED_Write(1);
-        }
     }
 }
 
