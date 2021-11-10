@@ -11,14 +11,16 @@
 */
 
 #ifndef __INTERRUPT_ROUTINE_H
+    
     #define __INTERRUPT_ROUTINE_H
+    
+    /* **** INCLUDE **** */
     
     #include "cytypes.h"
     #include "stdio.h"
     #include "I2C_Slave_Buffer.h"
     
     /* **** DEFINE **** */
-    
     
     #define TRANSMIT_BUFFER_SIZE 16 // Credo vada modificata per l'I2C
     #define MIN_VALUE 0
@@ -29,9 +31,8 @@
     
     CY_ISR_PROTO (Custom_ISR_ADC);
     
-    char DataBuffer[TRANSMIT_BUFFER_SIZE];//SECONDO ME NON SERVE(marg)
-    volatile uint8 PacketReadyFlag;//SECONDO ME NON SERVE(marg)
-    
+    //create buffer for I2C slave
+    uint8 buffer_I2C[7];
     int sampling_size;
     
 #endif

@@ -20,13 +20,15 @@
 /* **** VARIABLES **** */
 
 
-int32 raw_data_LDR[MAX_SIZE];
-int32 raw_data_TS[MAX_SIZE];
+int32 raw_data_LDR[MAX_SIZE]; /* raw_data_LDR and raw_data_TS are defined as arrays */
+int32 raw_data_TS[MAX_SIZE]; /* so if we want to know the single sample value we can obtain it*/
 int32 mean_LDR = 0;
 int32 mean_TS = 0;
 int32 value_LDR;
 int32 value_TS;
 int count = 0;
+
+
 
 
 /* **** FUNCTIONS **** */
@@ -79,25 +81,16 @@ CY_ISR (Custom_ISR_ADC){
     
         mean_LDR = mean_LDR / sampling_size;
         mean_TS = mean_TS / sampling_size;
-        
-        /* **** FINE PARTE FATTA **** */
     
-        /*
-        @daniele (e margherita) del futuro:
-        - value_LDR e TS vanno trasformate da mV all'effettivo valore di resistenza
-        - bisogna prima dimensionare la resistenza del partitore per LDR
-        - trovare la formula inversa per entrambi i sensori
-        */
-        
         // Update values
         
         value_LDR = ADC_DelSig_CountsTo_mVolts(mean_LDR);
+        value_TS = ADC_DelSig_CountsTo_mVolts(mean_TS);
         
-        // Display what ADC read
-     
-        sprintf(DataBuffer,"Sample: %ld mV\r\n", value_LDR);
-        PacketReadyFlag = 1;
+        // Send values to the buffer_I2C
         
+        buffer_I2C[2] = 0; 
+      
         // Reset values
         
         mean_LDR = 0;
