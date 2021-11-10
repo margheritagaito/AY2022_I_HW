@@ -24,13 +24,8 @@
 that determine the number of samples to be averaged */ 
 
 
-
-//create buffer for I2C slave
-uint8 buffer_I2C[7];  /*questa vorrei renderla visibile alle interrput, per poter fare check sui canali che master setta come attivi e 
-sulla base di questo far partire la conversione ADC solo dei canali appropriati*/
-
 int main(void)
-{
+{ 
     
     uint8 device_status;
     
