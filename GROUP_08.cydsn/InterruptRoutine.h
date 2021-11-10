@@ -18,22 +18,15 @@
     
     #include "cytypes.h"
     #include "stdio.h"
-    #include "I2C_Slave_Buffer.h"
-    
-    /* **** DEFINE **** */
-    
-    #define MIN_VALUE 0
-    #define MAX_VALUE 65535
-    #define MAX_SIZE 100 // Sample fatto al massimo su 100 valori
-    #define LDR_CHANNEL 1
-    #define TS_CHANNEL 0
+    #include "define.h"
     
     CY_ISR_PROTO (Custom_ISR_ADC);
     
     //create buffer for I2C slave
-    uint8 buffer_I2C[7];
-    int sampling_size;
+    uint8 buffer_I2C[BUFFER_SIZE];
+    uint8 sampling_size;
     
 #endif
 
 /* [] END OF FILE */
+
