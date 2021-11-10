@@ -30,48 +30,52 @@ int count = 0;
 
 
 
-
 /* **** FUNCTIONS **** */
-
-// Entering in ISR every 4 ms = 250 Hz frequency
 
 CY_ISR (Custom_ISR_ADC){
     
     Timer_ReadStatusRegister();
     
    
-    // Sampling LDR
+    // Sampling LDR only if its status bit is ON
     
-    AMux_Select(LDR_CHANNEL);
-    raw_data_LDR[count] = ADC_DelSig_Read32();
+    if (buffer_I2C[CTRL_REG_0_ADDR] | CH1_ON){ 
+        /*tutti i define del main messi in define.h*/
+        AMux_Select(LDR_CHANNEL);
+        raw_data_LDR[count] = ADC_DelSig_Read32();
     
-    // To avoid boundaries problems
+        // To avoid boundaries problems
     
-    if(raw_data_LDR[count] < MIN_VALUE) 
-        raw_data_LDR[count] = MIN_VALUE;
-    if(raw_data_LDR[count] > MAX_VALUE)
-        raw_data_LDR[count] = MAX_VALUE;
-        
-    // Sum up values to do the average
-        
-    mean_LDR += raw_data_LDR[count];    
-        
-    // Sampling TS
-        
-    AMux_Select(TS_CHANNEL);
-    raw_data_TS[count] = ADC_DelSig_Read32();
+        if(raw_data_LDR[count] < MIN_VALUE) 
+            raw_data_LDR[count] = MIN_VALUE;
+        if(raw_data_LDR[count] > MAX_VALUE)
+            raw_data_LDR[count] = MAX_VALUE;
+            
+        // Sum up values to do the average
+            
+        mean_LDR += raw_data_LDR[count];    
+    }
     
-    // To avoid boundaries problems
+    // Sampling TS only if its status bit is ON
+    
+    if(buffer_I2C[CTRL_REG_0_ADDR] | CH0_ON){
+        
+        AMux_Select(TS_CHANNEL);
+        raw_data_TS[count] = ADC_DelSig_Read32();
+        
+        // To avoid boundaries problems
 
-    if(raw_data_TS[count] < MIN_VALUE) 
-        raw_data_TS[count] = MIN_VALUE;
-    if(raw_data_TS[count] > MAX_VALUE)
-        raw_data_TS[count] = MAX_VALUE;
+        if(raw_data_TS[count] < MIN_VALUE) 
+            raw_data_TS[count] = MIN_VALUE;
+        if(raw_data_TS[count] > MAX_VALUE)
+            raw_data_TS[count] = MAX_VALUE;
+            
+        // Sum up values to do the average
+            
+        mean_TS += raw_data_TS[count];
         
-    // Sum up values to do the average
-        
-    mean_TS += raw_data_TS[count];
-        
+     }   
+    
     // Update count value  
     count ++;
     
@@ -87,9 +91,13 @@ CY_ISR (Custom_ISR_ADC){
         value_LDR = ADC_DelSig_CountsTo_mVolts(mean_LDR);
         value_TS = ADC_DelSig_CountsTo_mVolts(mean_TS);
         
-        // Send values to the buffer_I2C
+        // Save values to the buffer_I2C
         
-        buffer_I2C[2] = 0; 
+        buffer_I2C[CH_1_MSB_ADDR] = (uint8)(value_LDR >> 8); // Select the MSB
+        buffer_I2C[CH_1_LSB_ADDR] = (uint8)(value_LDR & 0xFF); // Select the LSB
+        buffer_I2C[CH_0_MSB_ADDR] = (uint8)(value_TS >> 8); // Select the MSB
+        buffer_I2C[CH_0_LSB_ADDR] = (uint8)(value_TS & 0xFF); // Select the LSB
+        
       
         // Reset values
         

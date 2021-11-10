@@ -45,7 +45,14 @@
     //CH1 bit 07-00 register address: 0x06
     #define CH_1_LSB_ADDR 0x06
     
-    // adesso i valori dei registri read only come li setto? posso usare buffer_I2C? mi sa di no, mi pare sia solo per fare la comunicazione con il master...no?
+    #define BOTH_ON_MASK 0b00000011 //mask, used to select the two status pins in control register 0
+    #define BOTH_ON 0b00000011 //value used to check both devices connected and visualize that with LED
+    #define CH0_ON 0b00000001 //only channel 0 on
+    #define CH1_ON 0b00000010 //only channel 1 on
+    #define BOTH_OFF 0b00000000 //both channels off 
+    #define AVG_SAMPLES_MASK 0b00111100 /*mask, used to access the 4 bits (in control register 0)
+                                        that determine the number of samples to be averaged */ 
+    
 #endif
 
 /* [] END OF FILE */
