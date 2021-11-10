@@ -20,15 +20,6 @@
     #include "stdio.h"
     #include "define.h"
     
-    /* **** DEFINE **** */
-    
-    #define MIN_VALUE 0
-    #define MAX_VALUE 65535
-    #define MAX_SIZE 100 // Sample fatto al massimo su 100 valori
-    #define LDR_CHANNEL 1
-    #define TS_CHANNEL 0
-    #define BUFFER_SIZE 7
-    
     CY_ISR_PROTO (Custom_ISR_ADC);
     
     //create buffer for I2C slave
@@ -38,3 +29,4 @@
 #endif
 
 /* [] END OF FILE */
+

@@ -12,7 +12,7 @@
 
 #include "project.h"
 #include "define.h"
-#include "../InterruptRoutine/InterruptRoutine.h"
+#include "InterruptRoutine.h"
 
 
 
@@ -44,7 +44,7 @@ int main(void)
         Timer_WritePeriod(buffer_I2C[CTRL_REG_1_ADDR]);
         
         //check both devices ON -> from status pins in CTRL REG 0
-        device_status = (buffer_I2C[CTRL_REG_0_ADDR] & (BOTH_ON_MASK));
+        device_status = (buffer_I2C[CTRL_REG_0_ADDR] & (STATUS));
         
         // Turn on the LED if both channels are being sampled
         

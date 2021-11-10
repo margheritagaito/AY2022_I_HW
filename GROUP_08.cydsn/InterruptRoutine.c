@@ -13,15 +13,15 @@
 /* **** INCLUDES **** */
 
 
-#include "../InterruptRoutine/InterruptRoutine.h"
+#include "InterruptRoutine.h"
 #include "project.h"
 
 
 /* **** VARIABLES **** */
 
 
-int32 raw_data_LDR[MAX_SIZE]; /* raw_data_LDR and raw_data_TS are defined as arrays */
-int32 raw_data_TS[MAX_SIZE]; /* so if we want to know the single sample value we can obtain it*/
+int32 raw_data_LDR;
+int32 raw_data_TS; 
 int32 mean_LDR = 0;
 int32 mean_TS = 0;
 int32 value_LDR;
@@ -41,18 +41,18 @@ CY_ISR (Custom_ISR_ADC){
     if(buffer_I2C[CTRL_REG_0_ADDR] & CH0_ON){
         
         AMux_Select(TS_CHANNEL);
-        raw_data_TS[count] = ADC_DelSig_Read32();
+        raw_data_TS = ADC_DelSig_Read32();
         
         // To avoid boundaries problems
 
-        if(raw_data_TS[count] < MIN_VALUE) 
-            raw_data_TS[count] = MIN_VALUE;
-        if(raw_data_TS[count] > MAX_VALUE)
-            raw_data_TS[count] = MAX_VALUE;
+        if(raw_data_TS < MIN_VALUE) 
+            raw_data_TS = MIN_VALUE;
+        if(raw_data_TS > MAX_VALUE)
+            raw_data_TS = MAX_VALUE;
             
         // Sum up values to do the average
             
-        mean_TS += raw_data_TS[count];
+        mean_TS += raw_data_TS;
         
      } 
     
@@ -61,18 +61,18 @@ CY_ISR (Custom_ISR_ADC){
     if (buffer_I2C[CTRL_REG_0_ADDR] & CH1_ON){ 
         
         AMux_Select(LDR_CHANNEL);
-        raw_data_LDR[count] = ADC_DelSig_Read32();
+        raw_data_LDR = ADC_DelSig_Read32();
     
         // To avoid boundaries problems
     
-        if(raw_data_LDR[count] < MIN_VALUE) 
-            raw_data_LDR[count] = MIN_VALUE;
-        if(raw_data_LDR[count] > MAX_VALUE)
-            raw_data_LDR[count] = MAX_VALUE;
+        if(raw_data_LDR < MIN_VALUE) 
+            raw_data_LDR = MIN_VALUE;
+        if(raw_data_LDR > MAX_VALUE)
+            raw_data_LDR = MAX_VALUE;
             
         // Sum up values to do the average
             
-        mean_LDR += raw_data_LDR[count];    
+        mean_LDR += raw_data_LDR;    
     }
       
     
