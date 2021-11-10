@@ -39,7 +39,7 @@ CY_ISR (Custom_ISR_ADC){
    
     // Sampling LDR only if its status bit is ON
     
-    if (buffer_I2C[CTRL_REG_0_ADDR] | CH0_ON){ 
+    if (buffer_I2C[CTRL_REG_0_ADDR] | CH1_ON){ 
         /*tutti i define del main messi in define.h*/
         AMux_Select(LDR_CHANNEL);
         raw_data_LDR[count] = ADC_DelSig_Read32();
@@ -58,7 +58,7 @@ CY_ISR (Custom_ISR_ADC){
     
     // Sampling TS only if its status bit is ON
     
-    if(buffer_I2C[CTRL_REG_0_ADDR] | CH1_ON){
+    if(buffer_I2C[CTRL_REG_0_ADDR] | CH0_ON){
         
         AMux_Select(TS_CHANNEL);
         raw_data_TS[count] = ADC_DelSig_Read32();
@@ -93,10 +93,10 @@ CY_ISR (Custom_ISR_ADC){
         
         // Save values to the buffer_I2C
         
-        buffer_I2C[CH_0_MSB_ADDR] = (uint8)(value_LDR >> 8); // Select the MSB
-        buffer_I2C[CH_0_LSB_ADDR] = (uint8)(value_LDR & 0xFF); // Select the LSB
-        buffer_I2C[CH_1_MSB_ADDR] = (uint8)(value_TS >> 8); // Select the MSB
-        buffer_I2C[CH_1_LSB_ADDR] = (uint8)(value_TS & 0xFF); // Select the LSB
+        buffer_I2C[CH_1_MSB_ADDR] = (uint8)(value_LDR >> 8); // Select the MSB
+        buffer_I2C[CH_1_LSB_ADDR] = (uint8)(value_LDR & 0xFF); // Select the LSB
+        buffer_I2C[CH_0_MSB_ADDR] = (uint8)(value_TS >> 8); // Select the MSB
+        buffer_I2C[CH_0_LSB_ADDR] = (uint8)(value_TS & 0xFF); // Select the LSB
         
       
         // Reset values

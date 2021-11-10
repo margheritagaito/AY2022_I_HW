@@ -36,7 +36,7 @@ int main(void)
     for(;;)
     {
         //define the number of smaples to be used to compute the average
-        sampling_size = buffer_I2C[CTRL_REG_0_ADDR] | AVG_SAMPLES_MASK ;
+        sampling_size = (buffer_I2C[CTRL_REG_0_ADDR] | AVG_SAMPLES_MASK) >> 2 ;
         
         
         //check both devices ON -> from status pins in CTRL REG 0
