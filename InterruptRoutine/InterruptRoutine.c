@@ -20,76 +20,92 @@
 /* **** VARIABLES **** */
 
 
-int32 raw_data_LDR;
-int32 raw_data_TS;
-int32 mean_LDR;
-int32 mean_TS;
+int32 raw_data_LDR[MAX_SIZE];
+int32 raw_data_TS[MAX_SIZE];
+int32 mean_LDR = 0;
+int32 mean_TS = 0;
 int32 value_LDR;
 int32 value_TS;
+int count = 0;
 
 
 /* **** FUNCTIONS **** */
 
-// Entering in ISR every 20 ms = 50 Hz frequency
+// Entering in ISR every 4 ms = 250 Hz frequency
 
 CY_ISR (Custom_ISR_ADC){
     
     Timer_ReadStatusRegister();
     
-    // Reset values
+   
+    // Sampling LDR
     
-    mean_LDR = 0;
-    mean_TS = 0;
+    AMux_Select(LDR_CHANNEL);
+    raw_data_LDR[count] = ADC_DelSig_Read32();
     
-    for(int i = 0; i < SIZE ; i++){
+    // To avoid boundaries problems
+    
+    if(raw_data_LDR[count] < MIN_VALUE) 
+        raw_data_LDR[count] = MIN_VALUE;
+    if(raw_data_LDR[count] > MAX_VALUE)
+        raw_data_LDR[count] = MAX_VALUE;
         
-        // Sampling both LDR and TS
+    // Sum up values to do the average
         
-        AMux_Select(LDR_CHANNEL);
-        raw_data_LDR = ADC_DelSig_Read32();
-        AMux_Select(TS_CHANNEL);
-        raw_data_TS = ADC_DelSig_Read32();
+    mean_LDR += raw_data_LDR[count];    
         
-        // To avoid boundaries problems
+    // Sampling TS
         
-        if(raw_data_LDR < MIN_VALUE) 
-            raw_data_LDR = MIN_VALUE;
-        if(raw_data_LDR > MAX_VALUE)
-            raw_data_LDR = MAX_VALUE;
-            
-        if(raw_data_TS < MIN_VALUE) 
-            raw_data_TS = MIN_VALUE;
-        if(raw_data_TS > MAX_VALUE)
-            raw_data_TS = MAX_VALUE;
-            
-        // Save the new aquired sample
-            
-        mean_LDR += raw_data_LDR;
-        mean_TS += raw_data_TS;
+    AMux_Select(TS_CHANNEL);
+    raw_data_TS[count] = ADC_DelSig_Read32();
+    
+    // To avoid boundaries problems
+
+    if(raw_data_TS[count] < MIN_VALUE) 
+        raw_data_TS[count] = MIN_VALUE;
+    if(raw_data_TS[count] > MAX_VALUE)
+        raw_data_TS[count] = MAX_VALUE;
         
+    // Sum up values to do the average
         
+    mean_TS += raw_data_TS[count];
+        
+    // Update count value  
+    count ++;
+    
+    if (count == sampling_size){
+        
+         // Obtain the avarage value of the two signals
+    
+        mean_LDR = mean_LDR / sampling_size;
+        mean_TS = mean_TS / sampling_size;
+        
+        /* **** FINE PARTE FATTA **** */
+    
+        /*
+        @daniele (e margherita) del futuro:
+        - value_LDR e TS vanno trasformate da mV all'effettivo valore di resistenza
+        - bisogna prima dimensionare la resistenza del partitore per LDR
+        - trovare la formula inversa per entrambi i sensori
+        */
+        
+        // Update values
+        
+        value_LDR = ADC_DelSig_CountsTo_mVolts(mean_LDR);
+        
+        // Display what ADC read
+     
+        sprintf(DataBuffer,"Sample: %ld mV\r\n", value_LDR);
+        PacketReadyFlag = 1;
+        
+        // Reset values
+        
+        mean_LDR = 0;
+        mean_TS = 0;    
+        count = 0;    
     }
-    
-    // Obtain the avarage value of the two signals
-    
-    mean_LDR = mean_LDR / SIZE;
-    mean_TS = mean_TS / SIZE;
-    
-    /* **** FINE PARTE FATTA **** */
-    
-    /*
-    @daniele (e margherita) del futuro:
-    - value_LDR e TS vanno trasformate da mV all'effettivo valore di resistenza
-    - bisogna prima dimensionare la resistenza del partitore per LDR
-    - trovare la formula inversa per entrambi i sensori
-    */
-    
-    value_LDR = ADC_DelSig_CountsTo_mVolts(mean_LDR);
-    
-    // Display what ADC read
- 
-    sprintf(DataBuffer,"Sample: %ld mV\r\n", value_LDR);
-    PacketReadyFlag = 1;
-    
+        
+        
 }
+    
 /* [] END OF FILE */
