@@ -11,7 +11,7 @@
 */
 #include "project.h"
 #include "I2C_Slave_Buffer.h"
-#include "InterruptRoutine.h"
+#include "../InterruptRoutine/InterruptRoutine.h"
 
 #define BOTH_ON_MASK 0b00000011 //mask, used to select the two status pins in control register 0
 #define BOTH_ON 0b00000011 //value used to check both devices connected and visualize that with LED
