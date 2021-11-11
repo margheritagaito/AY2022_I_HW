@@ -22,7 +22,7 @@ int main(void)
     CyGlobalIntEnable; /* Enable global interrupts. */
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    
+  
     //turn on EZI2C
     EZI2C_Start();
     //set up buffer     
@@ -33,6 +33,20 @@ int main(void)
     //start with LED LOW
     Pin_LED_Write(LOW);
     
+   
+      //Start the timer
+    Timer_Start();
+    
+    
+    
+    //start ADC
+    ADC_DelSig_Start();
+    
+    //start isr
+    isr_Timer_StartEx(Custom_ISR_ADC);
+    
+    
+    
     for(;;)
     {   
         // Turn on the LED if both channels are being sampled
@@ -41,6 +55,8 @@ int main(void)
             Pin_LED_Write(HIGH);
         else 
             Pin_LED_Write(LOW);
+        
+    
     }
 }
 

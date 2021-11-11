@@ -40,7 +40,7 @@ void EZI2C_ISR_ExitCallback(){
         sampling_size = (buffer_I2C[CTRL_REG_0_ADDR] & AVG_SAMPLES_MASK) >> 2 ;
         
         // Set timer period at the one selected
-        Timer_WritePeriod(buffer_I2C[CTRL_REG_1_ADDR]/sampling_size);
+       Timer_WritePeriod(1/(buffer_I2C[CTRL_REG_1_ADDR]*sampling_size));
         
         //check both devices ON -> from status pins in CTRL REG 0
         device_status = (buffer_I2C[CTRL_REG_0_ADDR] & (STATUS));
@@ -53,7 +53,7 @@ CY_ISR (Custom_ISR_ADC){
     
     Timer_ReadStatusRegister();
     
-    // Sampling TS only if its status bit is ON
+     // Sampling TS only if its status bit is ON
     
     if((buffer_I2C[CTRL_REG_0_ADDR] & CH0_ON) == CH0_ON){
         
@@ -121,8 +121,7 @@ CY_ISR (Custom_ISR_ADC){
         mean_TS = 0;
         mean_LDR = 0;    
         count = 0;    
-    }
-        
+    }  
         
 }
     
