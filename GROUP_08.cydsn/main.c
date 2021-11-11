@@ -13,13 +13,11 @@
 #include "project.h"
 #include "define.h"
 #include "InterruptRoutine.h"
-
+#include "cyapicallbacks.h"
 
 
 int main(void)
 { 
-    uint8 device_status;
-    uint8 buffer_I2C[BUFFER_SIZE] = {255,255,255,255,255,255,255};
     
     CyGlobalIntEnable; /* Enable global interrupts. */
 
@@ -36,16 +34,7 @@ int main(void)
     Pin_LED_Write(LOW);
     
     for(;;)
-    {
-        //define the number of smaples to be used to compute the average
-        sampling_size = (buffer_I2C[CTRL_REG_0_ADDR] & AVG_SAMPLES_MASK) >> 2 ;
-        
-        // Set timer period at the one selected 
-        Timer_WritePeriod(buffer_I2C[CTRL_REG_1_ADDR]);
-        
-        //check both devices ON -> from status pins in CTRL REG 0
-        device_status = (buffer_I2C[CTRL_REG_0_ADDR] & (STATUS));
-        
+    {   
         // Turn on the LED if both channels are being sampled
         
         if (device_status == BOTH_ON)
