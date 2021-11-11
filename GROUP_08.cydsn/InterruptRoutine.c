@@ -30,6 +30,7 @@ uint8 count = 0;
 
 
 
+
 /* **** FUNCTIONS **** */
 
 void EZI2C_ISR_ExitCallback(){
@@ -38,6 +39,8 @@ void EZI2C_ISR_ExitCallback(){
     
         //define the number of smaples to be used to compute the average
         sampling_size = (buffer_I2C[CTRL_REG_0_ADDR] & AVG_SAMPLES_MASK) >> 2 ;
+        
+       
         
         // Set timer period at the one selected
        //Timer_WritePeriod(1/(buffer_I2C[CTRL_REG_1_ADDR]*sampling_size));
