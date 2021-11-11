@@ -1,0 +1,15 @@
+Use the following commands to set up the control panel:
+
+Set up sampling size and channels used (0x17 = 0b00010111)
+
+		w 08 00 17 p
+
+Set up data-transmission period (0x14 = 0d20)
+*IT MUST COINCIDE WITH THE ONE SELECTED IN REPEAT TO AVOID MISCALCULATIONS*
+
+		w 08 01 14 p
+
+Read the two sampled outputs
+
+		w 08 03 p
+		r 08 @1TS @0TS @1LDR @0LDR p
