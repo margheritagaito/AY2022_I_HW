@@ -29,9 +29,9 @@ int32 value_TS;
 uint8 count = 0;
 
 
-
-
 /* **** FUNCTIONS **** */
+
+/* **** CALLBACK **** */
 
 void EZI2C_ISR_ExitCallback(){
 
@@ -40,19 +40,15 @@ void EZI2C_ISR_ExitCallback(){
         //define the number of smaples to be used to compute the average
         sampling_size = (buffer_I2C[CTRL_REG_0_ADDR] & AVG_SAMPLES_MASK) >> 2 ;
         
-       
-        
         // Set timer period at the one selected
-       //Timer_WritePeriod(1/(buffer_I2C[CTRL_REG_1_ADDR]*sampling_size));
         Timer_WritePeriod((buffer_I2C[CTRL_REG_1_ADDR])/sampling_size);
-        
         
         //check both devices ON -> from status pins in CTRL REG 0
         device_status = (buffer_I2C[CTRL_REG_0_ADDR] & (STATUS));
 
-
-
 }
+
+/* **** ISR **** */
 
 CY_ISR (Custom_ISR_ADC){
     
@@ -113,13 +109,12 @@ CY_ISR (Custom_ISR_ADC){
         value_TS = ADC_DelSig_CountsTo_mVolts(mean_TS);
         value_LDR = ADC_DelSig_CountsTo_mVolts(mean_LDR);
         
+        // Save values in buffer_I2C
         
-        // Save values to the buffer_I2C
-        
-        buffer_I2C[CH_0_MSB_ADDR] = (uint8)(value_TS >> 8); // Select the MSB
-        buffer_I2C[CH_0_LSB_ADDR] = (uint8)(value_TS & 0xFF); // Select the LSB
-        buffer_I2C[CH_1_MSB_ADDR] = (uint8)(value_LDR >> 8); // Select the MSB
-        buffer_I2C[CH_1_LSB_ADDR] = (uint8)(value_LDR & 0xFF); // Select the LSB
+        buffer_I2C[CH_0_MSB_ADDR] = (uint8)(value_TS >> 8);     // Select the MSB
+        buffer_I2C[CH_0_LSB_ADDR] = (uint8)(value_TS & 0xFF);   // Select the LSB
+        buffer_I2C[CH_1_MSB_ADDR] = (uint8)(value_LDR >> 8);    // Select the MSB
+        buffer_I2C[CH_1_LSB_ADDR] = (uint8)(value_LDR & 0xFF);  // Select the LSB
       
         // Reset values
         

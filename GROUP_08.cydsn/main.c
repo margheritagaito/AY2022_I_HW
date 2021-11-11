@@ -10,10 +10,17 @@
  * ========================================
 */
 
+
+/* **** INCLUDES **** */
+
+
 #include "project.h"
 #include "define.h"
 #include "InterruptRoutine.h"
 #include "cyapicallbacks.h"
+
+
+/* **** MAIN **** */
 
 
 int main(void)
@@ -23,28 +30,26 @@ int main(void)
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
   
-    //turn on EZI2C
+    // Turn on EZI2C
     EZI2C_Start();
-    //set up buffer     
+    
+    // Set up buffer     
     EZI2C_SetBuffer1(BUFFER_SIZE , 2 , buffer_I2C);
-    //write on buffer the WAI register with the return value
+    
+    // Write on buffer the WAI register with the return value
     buffer_I2C[WHOAMI_ADDR] = WHOAMI_RETVAL;
     
-    //start with LED LOW
+    // Start with LED LOW
     Pin_LED_Write(LOW);
-    
-   
-      //Start the timer
+
+    // Start the timer
     Timer_Start();
     
-    
-    
-    //start ADC
+    // Start ADC
     ADC_DelSig_Start();
     
-    //start isr
+    // Start ISR
     isr_Timer_StartEx(Custom_ISR_ADC);
-    
     
     
     for(;;)
