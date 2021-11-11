@@ -32,13 +32,30 @@ uint8 count = 0;
 
 /* **** FUNCTIONS **** */
 
+void EZI2C_ISR_ExitCallback(){
+
+        // Update the variables to given values 
+    
+        //define the number of smaples to be used to compute the average
+        sampling_size = (buffer_I2C[CTRL_REG_0_ADDR] & AVG_SAMPLES_MASK) >> 2 ;
+        
+        // Set timer period at the one selected
+        Timer_WritePeriod(buffer_I2C[CTRL_REG_1_ADDR]/sampling_size);
+        
+        //check both devices ON -> from status pins in CTRL REG 0
+        device_status = (buffer_I2C[CTRL_REG_0_ADDR] & (STATUS));
+
+
+
+}
+
 CY_ISR (Custom_ISR_ADC){
     
     Timer_ReadStatusRegister();
     
     // Sampling TS only if its status bit is ON
     
-    if(buffer_I2C[CTRL_REG_0_ADDR] & CH0_ON){
+    if((buffer_I2C[CTRL_REG_0_ADDR] & CH0_ON) == CH0_ON){
         
         AMux_Select(TS_CHANNEL);
         raw_data_TS = ADC_DelSig_Read32();
@@ -58,7 +75,7 @@ CY_ISR (Custom_ISR_ADC){
     
     // Sampling LDR only if its status bit is ON
     
-    if (buffer_I2C[CTRL_REG_0_ADDR] & CH1_ON){ 
+    if ((buffer_I2C[CTRL_REG_0_ADDR] & CH1_ON) == CH1_ON){ 
         
         AMux_Select(LDR_CHANNEL);
         raw_data_LDR = ADC_DelSig_Read32();
