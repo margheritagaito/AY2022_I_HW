@@ -24,6 +24,7 @@
     CY_ISR_PROTO (Custom_ISR_ADC);
     
     //create buffer for I2C slave
+    
     uint8 buffer_I2C[BUFFER_SIZE];
     uint8 sampling_size;
     uint8 device_status;
